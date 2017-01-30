@@ -47,6 +47,19 @@ public class MainActivity extends AppCompatActivity {
             todoDAO.update(todoData);
             adapter.notifyDataSetChanged();
         }
+        if(requestCode == 1000 && resultCode == 1002){
+            String result_value = data.getStringExtra("result");
+            String result_value2 = data.getStringExtra("result2");
+            String result_value3 = data.getStringExtra("result3");
+            int id =(int)data.getIntExtra("id",0);
+            TodoData todoData = new TodoData();
+            todoData.setContent(result_value);
+            todoData.setMonth(result_value2);
+            todoData.setDay(result_value3);
+            todoDAO.insert(todoData);
+            mList.add(todoData);
+            adapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -59,13 +72,13 @@ public class MainActivity extends AppCompatActivity {
         edit=(Button)findViewById(R.id.edit);
         create =(Button)findViewById(R.id.create);
         todoDAO = new TodoDAO(getApplicationContext());
-        TodoData todoData =new TodoData();
-        todoData.setContent("sssssDB");
-        todoData.setMonth("12");
-        todoData.setDay("1");
-        todoData.setId(0);
-
-        todoDAO.insert(todoData);
+//        TodoData todoData =new TodoData();
+//        todoData.setContent("sssssDB");
+//        todoData.setMonth("12");
+//        todoData.setDay("1");
+//        todoData.setId(0);
+//
+//        todoDAO.insert(todoData);
         List<TodoData > todoDataList=todoDAO.getAll();
 
         for (int i =0 ;i<todoDataList.size();i++){
@@ -75,13 +88,23 @@ public class MainActivity extends AppCompatActivity {
 
         create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                TodoData todoData =new TodoData();
-                todoData.setContent("sssss");
-                todoData.setMonth("12");
-                todoData.setDay("1");
-                todoData.setId(0);
-                mList.add(todoData);
-                adapter.notifyDataSetChanged();
+                Intent  intent = new Intent(self, Main2Activity.class);
+
+                Bundle bundle = new Bundle();  //　　Bundle的底层是一个HashMap<String, Object
+                bundle.putString("str","");
+                bundle.putString("month","");
+                bundle.putString("day","");
+                bundle.putInt("id",-1);
+                intent.putExtra("bundle", bundle);
+
+                startActivityForResult(intent, 1000);
+//                TodoData todoData =new TodoData();
+//                todoData.setContent("sssss");
+//                todoData.setMonth("12");
+//                todoData.setDay("1");
+//                todoData.setId(0);
+//                mList.add(todoData);
+//                adapter.notifyDataSetChanged();
             }
         });
         adapter = new MyAdapter(this);
@@ -161,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Bundle bundle = new Bundle();  //　　Bundle的底层是一个HashMap<String, Object
                     bundle.putString("str",mList.get(pos).getContent());
+                    bundle.putString("month",mList.get(pos).getMonth());
+                    bundle.putString("day",mList.get(pos).getDay());
                     bundle.putInt("id",pos);
                     intent.putExtra("bundle", bundle);
 

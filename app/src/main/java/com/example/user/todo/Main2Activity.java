@@ -21,10 +21,17 @@ private EditText editText;
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         String world = bundle.getString("str");
+        String month = bundle.getString("month");
+        String day = bundle.getString("day");
         id =bundle.getInt("id");
+
         editText=(EditText) findViewById(R.id.editText);
         editText2=(EditText) findViewById(R.id.editText2);
         editText3=(EditText) findViewById(R.id.editText3);
+
+        editText.setText(world);
+        editText2.setText(month);
+        editText3.setText(day);
 
 button =(Button)findViewById(R.id.button);
 
@@ -40,12 +47,18 @@ button =(Button)findViewById(R.id.button);
                 /*
                  * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，这样就可以在onActivityResult方法中得到Intent对象，
                  */
-                setResult(1001, intent);
+                if(id == -1){
+                    setResult(1002, intent);
+                }else{
+                    setResult(1001, intent);
+                }
+
+
                 //    结束当前这个Activity对象的生命
                 finish();
             }
         });
-        editText.setText(world);
+
 
     }
 }
